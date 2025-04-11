@@ -23,7 +23,8 @@ export const AuthProvider = ({ children }) => {
   }, [token]);
 
   const login = () => {
-    window.location.href = "http://localhost:3000/api/instagram/login";
+    window.location.href =
+      "https://insta-back-sh0s.onrender.com/api/instagram/login";
   };
 
   const logout = () => {

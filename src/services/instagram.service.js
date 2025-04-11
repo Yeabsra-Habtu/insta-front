@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:3000/api/instagram";
+const API_BASE_URL = "https://insta-back-sh0s.onrender.com/api/instagram";
 
 export const instagramService = {
   async getProfile(token) {

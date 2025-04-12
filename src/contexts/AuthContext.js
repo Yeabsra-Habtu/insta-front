@@ -6,13 +6,21 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem("instagram_token"));
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
+  const [error, setError] = useState(null);
+
   useEffect(() => {
-    // Check for token in URL when component mounts
+    // Check for token or error in URL when component mounts
     const urlParams = new URLSearchParams(window.location.search);
     const tokenFromUrl = urlParams.get("token");
+    const errorFromUrl = urlParams.get("error");
 
-    if (tokenFromUrl) {
+    if (errorFromUrl) {
+      setError(decodeURIComponent(errorFromUrl));
+      // Clean up URL
+      window.history.replaceState({}, document.title, window.location.pathname);
+    } else if (tokenFromUrl) {
       setToken(tokenFromUrl);
+      setError(null);
       localStorage.setItem("instagram_token", tokenFromUrl);
       // Clean up URL
       window.history.replaceState({}, document.title, window.location.pathname);
@@ -34,7 +42,9 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ token, isAuthenticated, login, logout }}>
+    <AuthContext.Provider
+      value={{ token, isAuthenticated, login, logout, error, setError }}
+    >
       {children}
     </AuthContext.Provider>
   );

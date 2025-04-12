@@ -63,7 +63,18 @@ export const Profile = () => {
   if (error) {
     return (
       <div className="text-center p-4">
-        <p className="text-red-500">{error}</p>
+        <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
+          <p className="text-red-700 mb-2">{error}</p>
+          <button
+            onClick={() => {
+              setError(null);
+              login();
+            }}
+            className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors"
+          >
+            Retry Login
+          </button>
+        </div>
       </div>
     );
   }

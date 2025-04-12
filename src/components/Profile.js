@@ -3,7 +3,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { instagramService } from "../services/instagram.service";
 
 export const Profile = () => {
-  const { token, logout } = useAuth();
+  const { token, logout, login } = useAuth();
   const [profile, setProfile] = useState(null);
   const [media, setMedia] = useState([]);
   const [loading, setLoading] = useState(true);

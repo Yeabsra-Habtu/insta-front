@@ -122,48 +122,22 @@ export const Profile = () => {
               </p>
 
               {/* Comment Reply Form */}
-              {/* Comments Section */}
               <div className="mt-4">
-                {item.comments && item.comments.data ? (
-                  item.comments.data.length > 0 ? (
-                    <div className="mb-4">
-                      {item.comments.data.map((comment) => (
-                        <div
-                          key={comment.id}
-                          className="mb-2 p-2 bg-gray-50 rounded"
-                        >
-                          <p className="text-sm">{comment.text}</p>
-                          <button
-                            onClick={() => setActiveCommentId(comment.id)}
-                            className="text-xs text-blue-500 mt-1"
-                          >
-                            Reply to this comment
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <p className="text-gray-500 text-sm">No comments yet</p>
-                  )
-                ) : null}
-                {activeCommentId && (
-                  <div>
-                    <input
-                      type="text"
-                      placeholder="Write your reply..."
-                      className="w-full p-2 border rounded-lg mb-2"
-                      value={replyText}
-                      onChange={(e) => setReplyText(e.target.value)}
-                    />
-                    <button
-                      onClick={() => handleReply(item.id)}
-                      className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"
-                      disabled={!replyText.trim()}
-                    >
-                      Send Reply
-                    </button>
-                  </div>
-                )}
+                <input
+                  type="text"
+                  placeholder="Reply to comment..."
+                  className="w-full p-2 border rounded-lg mb-2"
+                  value={replyText}
+                  onChange={(e) => setReplyText(e.target.value)}
+                  onClick={() => setActiveCommentId(item.id)}
+                />
+                <button
+                  onClick={() => handleReply(item.id)}
+                  className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"
+                  disabled={!replyText.trim() || !activeCommentId}
+                >
+                  Reply
+                </button>
               </div>
             </div>
           </div>

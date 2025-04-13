@@ -29,7 +29,10 @@ export const Profile = () => {
         const commentsPromises = mediaItems.map((item) =>
           instagramService
             .getComments(item.id, token)
-            .then((comments) => ({ mediaId: item.id, comments }))
+            .then((response) => ({
+              mediaId: item.id,
+              comments: response.data || [],
+            }))
             .catch(() => ({ mediaId: item.id, comments: [] }))
         );
 

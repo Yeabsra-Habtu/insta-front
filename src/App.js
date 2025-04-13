@@ -3,7 +3,7 @@ import { Profile } from "./components/Profile";
 import "./App.css";
 
 const MainContent = () => {
-  const { isAuthenticated, login } = useAuth();
+  const { isAuthenticated, login, logout } = useAuth();
 
   console.log(isAuthenticated, "isAuthenticated"); // Log the isAuthenticated value to the console
 

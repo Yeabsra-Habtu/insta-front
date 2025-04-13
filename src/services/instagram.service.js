@@ -34,6 +34,45 @@ export const instagramService = {
     }
   },
 
+  async getComments(mediaId, token) {
+    try {
+      const response = await fetch(
+        `${API_BASE_URL}/media/${mediaId}/comments`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (!response.ok) throw new Error("Failed to fetch comments");
+      return await response.json();
+    } catch (error) {
+      console.error("Error fetching comments:", error);
+      throw error;
+    }
+  },
+
+  async createComment(mediaId, message, token) {
+    try {
+      const response = await fetch(
+        `${API_BASE_URL}/media/${mediaId}/comments`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ message }),
+        }
+      );
+      if (!response.ok) throw new Error("Failed to create comment");
+      return await response.json();
+    } catch (error) {
+      console.error("Error creating comment:", error);
+      throw error;
+    }
+  },
+
   async replyToComment(mediaId, commentId, message, token) {
     try {
       const response = await fetch(`${API_BASE_URL}/comment/${mediaId}/reply`, {

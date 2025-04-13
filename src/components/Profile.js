@@ -168,7 +168,7 @@ export const Profile = () => {
               {/* Comments Section */}
               <div className="space-y-4">
                 <h3 className="font-semibold text-gray-700">Comments</h3>
-                <div className="max-h-60 overflow-y-auto space-y-3">
+                {/* <div className="max-h-60 overflow-y-auto space-y-3">
                   {(mediaComments[item.id] || []).map((comment) => (
                     <div key={comment.id} className="bg-gray-50 rounded-lg p-3">
                       <p className="text-sm text-gray-800">{comment.text}</p>
@@ -182,7 +182,6 @@ export const Profile = () => {
                           </div>
                         ))}
                       </div>
-                      {/* Reply Form */}
                       {activeCommentId === comment.id && (
                         <div className="mt-2">
                           <input
@@ -211,7 +210,7 @@ export const Profile = () => {
                       )}
                     </div>
                   ))}
-                </div>
+                </div> */}
 
                 {/* New Comment Form */}
                 <div className="mt-4">

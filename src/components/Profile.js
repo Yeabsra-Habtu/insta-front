@@ -169,11 +169,11 @@ export const Profile = () => {
               <div className="space-y-4">
                 <h3 className="font-semibold text-gray-700">Comments</h3>
                 <div className="max-h-60 overflow-y-auto space-y-3">
-                  {mediaComments[item.id]?.map((comment) => (
+                  {(mediaComments[item.id] || []).map((comment) => (
                     <div key={comment.id} className="bg-gray-50 rounded-lg p-3">
                       <p className="text-sm text-gray-800">{comment.text}</p>
                       <div className="mt-2 pl-4 space-y-2">
-                        {comment.replies?.map((reply) => (
+                        {(comment.replies || []).map((reply) => (
                           <div
                             key={reply.id}
                             className="text-sm text-gray-600 bg-gray-100 rounded p-2"

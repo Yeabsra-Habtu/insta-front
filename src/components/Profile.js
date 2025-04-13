@@ -128,21 +128,51 @@ export const Profile = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      {/* Profile Info */}
+      {/* Profile Hero Section */}
       {profile && (
-        <div className="bg-white rounded-lg shadow p-6 mb-8">
-          <h1 className="text-2xl font-bold mb-4">@{profile.username}</h1>
-          <p className="text-gray-600">Account Type: {profile.account_type}</p>
-          <p className="text-gray-600">Media Count: {profile.media_count}</p>
+        <div className="bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl shadow-lg p-8 mb-12 transform hover:scale-[1.02] transition-transform duration-300">
+          <div className="flex flex-col md:flex-row items-center gap-8">
+            <div className="relative">
+              <img
+                src={profile.profile_picture_url}
+                alt={profile.username}
+                className="w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-white shadow-xl object-cover"
+              />
+              <div className="absolute -bottom-2 right-0 bg-green-400 w-6 h-6 rounded-full border-4 border-white"></div>
+            </div>
+            <div className="flex-1 text-center md:text-left">
+              <h1 className="text-3xl md:text-4xl font-bold mb-4">
+                @{profile.username}
+              </h1>
+              <div className="flex flex-wrap justify-center md:justify-start gap-6 mb-4">
+                <div className="text-center">
+                  <p className="text-2xl font-bold">{profile.media_count}</p>
+                  <p className="text-sm opacity-90">Posts</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-2xl font-bold">
+                    {profile.followers_count}
+                  </p>
+                  <p className="text-sm opacity-90">Followers</p>
+                </div>
+              </div>
+              <p className="text-lg opacity-90 mb-4">{profile.biography}</p>
+              <div className="flex flex-wrap gap-3">
+                <span className="px-4 py-1 bg-white/20 rounded-full text-sm">
+                  {profile.account_type}
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
       )}
 
       {/* Media Feed */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {media.map((item) => (
           <div
             key={item.id}
-            className="bg-white rounded-lg shadow overflow-hidden"
+            className="bg-white rounded-xl shadow-lg overflow-hidden transform hover:scale-[1.02] transition-transform duration-300"
           >
             {/* Media Content */}
             <div className="aspect-w-1 aspect-h-1">
@@ -162,24 +192,33 @@ export const Profile = () => {
             </div>
 
             {/* Caption and Comments */}
-            <div className="p-4">
-              <p className="text-gray-800 mb-2">{item.caption}</p>
-              <p className="text-gray-500 text-sm mb-4">
+            <div className="p-6">
+              <p className="text-gray-800 text-lg mb-3 font-medium">
+                {item.caption}
+              </p>
+              <p className="text-gray-500 text-sm mb-6">
                 {new Date(item.timestamp).toLocaleDateString()}
               </p>
 
               {/* Comments Section */}
               <div className="space-y-4">
-                <h3 className="font-semibold text-gray-700">Comments</h3>
+                <h3 className="font-semibold text-gray-700 text-lg mb-4">
+                  Comments
+                </h3>
                 <div className="max-h-60 overflow-y-auto space-y-3">
                   {mediaComments[item.id]?.map((comment) => (
-                    <div key={comment.id} className="bg-gray-50 rounded-lg p-3">
-                      <p className="text-sm text-gray-800">{comment.text}</p>
+                    <div
+                      key={comment.id}
+                      className="bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors duration-200"
+                    >
+                      <p className="text-sm text-gray-800 font-medium">
+                        {comment.text}
+                      </p>
                       <div className="mt-2 pl-4 space-y-2">
                         {comment.replies?.map((reply) => (
                           <div
                             key={reply.id}
-                            className="text-sm text-gray-600 bg-gray-100 rounded p-2"
+                            className="text-sm text-gray-600 bg-gray-100 rounded-lg p-3 hover:bg-gray-200 transition-colors duration-200"
                           >
                             {reply.text}
                           </div>

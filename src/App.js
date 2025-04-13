@@ -5,6 +5,8 @@ import "./App.css";
 const MainContent = () => {
   const { isAuthenticated, login } = useAuth();
 
+  console.log(isAuthenticated, "isAuthenticated"); // Log the isAuthenticated value to the console
+
   return (
     <div className="min-h-screen bg-gray-100">
       <nav className="bg-white shadow-lg">

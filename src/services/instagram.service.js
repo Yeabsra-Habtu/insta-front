@@ -67,6 +67,24 @@ export const instagramService = {
     }
   },
 
+  async getCommentReplies(commentId, token) {
+    try {
+      const response = await fetch(
+        `${API_BASE_URL}/comments/${commentId}/replies`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (!response.ok) throw new Error("Failed to fetch comment replies");
+      return await response.json();
+    } catch (error) {
+      console.error("Error fetching comment replies:", error);
+      throw error;
+    }
+  },
+
   async createComment(mediaId, message, token) {
     try {
       const response = await fetch(

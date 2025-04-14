@@ -55,6 +55,51 @@ export const Profile = () => {
     if (token) fetchData();
   }, [token, logout]);
 
+  // Function to fetch replies for a specific comment
+  const fetchCommentReplies = async (commentId) => {
+    try {
+      const repliesData = await instagramService.getCommentReplies(
+        commentId,
+        token
+      );
+      return repliesData.data || [];
+    } catch (err) {
+      console.error("Error fetching replies:", err);
+      return [];
+    }
+  };
+
+  // Function to toggle showing replies for a comment
+  const toggleReplies = async (mediaId, commentId) => {
+    // If comment already has replies loaded, just toggle visibility
+    const comment = mediaComments[mediaId]?.find((c) => c.id === commentId);
+
+    if (comment && !comment.repliesLoaded) {
+      try {
+        const replies = await fetchCommentReplies(commentId);
+
+        setMediaComments((prev) => ({
+          ...prev,
+          [mediaId]: prev[mediaId].map((c) =>
+            c.id === commentId
+              ? { ...c, replies, repliesLoaded: true, showReplies: true }
+              : c
+          ),
+        }));
+      } catch (err) {
+        setError("Failed to load replies");
+      }
+    } else {
+      // Just toggle visibility of already loaded replies
+      setMediaComments((prev) => ({
+        ...prev,
+        [mediaId]: prev[mediaId].map((c) =>
+          c.id === commentId ? { ...c, showReplies: !c.showReplies } : c
+        ),
+      }));
+    }
+  };
+
   const handleComment = async (mediaId) => {
     if (!commentText.trim()) return;
 
@@ -186,16 +231,59 @@ export const Profile = () => {
                   {mediaComments[item.id]?.map((comment) => (
                     <div key={comment.id} className="bg-gray-50 rounded-lg p-3">
                       <p className="text-sm text-gray-800">{comment.text}</p>
-                      <div className="mt-2 pl-4 space-y-2">
-                        {comment.replies?.map((reply) => (
-                          <div
-                            key={reply.id}
-                            className="text-sm text-gray-600 bg-gray-100 rounded p-2"
+                      {/* Show replies button */}
+                      <div className="flex justify-between items-center mt-1 mb-2">
+                        {comment.replies && comment.replies.length > 0 && (
+                          <button
+                            onClick={() => toggleReplies(item.id, comment.id)}
+                            className="text-xs text-gray-500 flex items-center"
                           >
-                            {reply.text}
-                          </div>
-                        ))}
+                            {comment.showReplies ? (
+                              <>
+                                <span className="mr-1">▼</span> Hide{" "}
+                                {comment.replies.length}{" "}
+                                {comment.replies.length === 1
+                                  ? "reply"
+                                  : "replies"}
+                              </>
+                            ) : (
+                              <>
+                                <span className="mr-1">▶</span> View{" "}
+                                {comment.replies.length}{" "}
+                                {comment.replies.length === 1
+                                  ? "reply"
+                                  : "replies"}
+                              </>
+                            )}
+                          </button>
+                        )}
+
+                        {activeCommentId !== comment.id && (
+                          <button
+                            onClick={() => setActiveCommentId(comment.id)}
+                            className="text-xs text-blue-600 hover:text-blue-800"
+                          >
+                            Reply
+                          </button>
+                        )}
                       </div>
+
+                      {/* Replies section */}
+                      {comment.showReplies &&
+                        comment.replies &&
+                        comment.replies.length > 0 && (
+                          <div className="mt-2 pl-4 space-y-2">
+                            {comment.replies.map((reply) => (
+                              <div
+                                key={reply.id}
+                                className="text-sm text-gray-600 bg-gray-100 rounded p-2"
+                              >
+                                {reply.text}
+                              </div>
+                            ))}
+                          </div>
+                        )}
+
                       {/* Reply Form */}
                       {activeCommentId === comment.id && (
                         <div className="mt-2">
@@ -214,14 +302,6 @@ export const Profile = () => {
                             Reply
                           </button>
                         </div>
-                      )}
-                      {activeCommentId !== comment.id && (
-                        <button
-                          onClick={() => setActiveCommentId(comment.id)}
-                          className="mt-1 text-xs text-blue-600 hover:text-blue-800"
-                        >
-                          Reply
-                        </button>
                       )}
                     </div>
                   ))}

@@ -18,14 +18,11 @@ export const instagramService = {
   },
   async getProfile(token) {
     try {
-      console.log("token from getProfile:", token); // Add thi
-
       const response = await fetch(`${API_BASE_URL}/profile`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("Response from ge tProfile:", response); // Add thi
       if (!response.ok) throw new Error("Failed to fetch profile");
       return await response.json();
     } catch (error) {

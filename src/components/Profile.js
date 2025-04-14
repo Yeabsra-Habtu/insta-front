@@ -9,7 +9,7 @@ export const Profile = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [replyText, setReplyText] = useState("");
-  const [commentText, setCommentText] = useState("");
+  const [mediaCommentTexts, setMediaCommentTexts] = useState({});
   const [activeCommentId, setActiveCommentId] = useState(null);
   const [mediaComments, setMediaComments] = useState({});
 
@@ -101,7 +101,8 @@ export const Profile = () => {
   };
 
   const handleComment = async (mediaId) => {
-    if (!commentText.trim()) return;
+    const commentText = mediaCommentTexts[mediaId];
+    if (!commentText?.trim()) return;
 
     try {
       const newComment = await instagramService.createComment(
@@ -113,7 +114,7 @@ export const Profile = () => {
         ...prev,
         [mediaId]: [...(prev[mediaId] || []), newComment],
       }));
-      setCommentText("");
+      setMediaCommentTexts((prev) => ({ ...prev, [mediaId]: "" }));
     } catch (err) {
       setError("Failed to post comment");
     }
@@ -433,8 +434,13 @@ export const Profile = () => {
                       type="text"
                       placeholder="Write a comment..."
                       className="w-full p-3 pr-24 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-300 focus:border-purple-500 outline-none transition-all"
-                      value={commentText}
-                      onChange={(e) => setCommentText(e.target.value)}
+                      value={mediaCommentTexts[item.id] || ""}
+                      onChange={(e) =>
+                        setMediaCommentTexts((prev) => ({
+                          ...prev,
+                          [item.id]: e.target.value,
+                        }))
+                      }
                     />
                     <button
                       onClick={() => handleComment(item.id)}

@@ -445,7 +445,7 @@ export const Profile = () => {
                     <button
                       onClick={() => handleComment(item.id)}
                       className="absolute right-1 top-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-lg hover:from-purple-600 hover:to-pink-600 transition-all shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
-                      disabled={!commentText.trim()}
+                      disabled={!mediaCommentTexts[item.id]?.trim()}
                     >
                       <span className="flex items-center">
                         <svg
